@@ -23,7 +23,7 @@ const char *favorite_movies[] = {
     "The Shawshank Redemption", "21 Jump Street Parts 1 & 2", "This Is the End", "Babylon", "The Good, the Bad and the Ugly", 
     "Forrest Gump", "The Matrix", "Goodfellas", "Saving Private Ryan", "The Green Mile", "Parasite", "The Prestige", 
     "Hereditary", "Ghost Rider", "Ghost Rider: Spirit of Vengeance", "Resident Evil (All of Them)", "The Wolf of Snow Hollow", 
-    "Jojo Rabbit", "Catch Me If You Can", "Don't Look Up", "Blood Diamond", "ss"
+    "Jojo Rabbit", "Catch Me If You Can", "Don't Look Up", "Blood Diamond", "Predestination "
 };
 
 const char *favorite_tv_shows[] = {
@@ -52,9 +52,6 @@ void displayMainMenu() {
     printf("Choice 1: one Random favorite TV show\n");
     printf("Choice 2: one of my top 10\n");
     printf("Choice 3: watchlist\n");
-    if (watchlist_count > 0) {
-        printf("Choice 4: Go back to the main menu\n");
-    }
     printf("Choice 5: Add item to watchlist\n");
     printf("Choice 6: Exit\n");
 }
