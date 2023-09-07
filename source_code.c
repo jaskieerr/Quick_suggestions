@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 const char *favorite_movies[] = {
     "Interstellar", "Schindler's List", "Dune", "Oppenheimer", "Inception", "Pirates of the Caribbean: The Curse of the Black Pearl",
@@ -23,7 +25,7 @@ const char *favorite_movies[] = {
     "The Shawshank Redemption", "21 Jump Street Parts 1 & 2", "This Is the End", "Babylon", "The Good, the Bad and the Ugly", 
     "Forrest Gump", "The Matrix", "Goodfellas", "Saving Private Ryan", "The Green Mile", "Parasite", "The Prestige", 
     "Hereditary", "Ghost Rider", "Ghost Rider: Spirit of Vengeance", "Resident Evil (All of Them)", "The Wolf of Snow Hollow", 
-    "Jojo Rabbit", "Catch Me If You Can", "Don't Look Up", "Blood Diamond", "Predestination "
+    "Jojo Rabbit", "Catch Me If You Can", "Don't Look Up", "Blood Diamond", "Predestination"
 };
 
 const char *favorite_tv_shows[] = {
@@ -46,6 +48,8 @@ const char *My_top_10[] = {
 const char *watchlist[MAX_WATCHLIST_SIZE];
 int watchlist_count = 0;
 
+const char *previous_suggestion = NULL;
+
 void displayMainMenu() {
     printf("Merhba bik who ever u are except if ur a flat earther pls fuck off\n");
     printf("Choice 0: one Random favorite movie\n");
@@ -54,6 +58,25 @@ void displayMainMenu() {
     printf("Choice 3: watchlist\n");
     printf("Choice 5: Add item to watchlist\n");
     printf("Choice 6: Exit\n");
+}
+
+void toLowerCase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower((unsigned char)str[i]);
+    }
+}
+
+bool isItemInWatchlist(const char *item) {
+    char lowercase_item[100];
+    strcpy(lowercase_item, item);
+    toLowerCase(lowercase_item);
+
+    for (int i = 0; i < watchlist_count; i++) {
+        if (strcmp(lowercase_item, watchlist[i]) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void addToWatchlist(const char *item) {
@@ -109,17 +132,29 @@ int main() {
 
         switch (choice) {
             case 0: {
-                int random_movie_index = rand() % (sizeof(favorite_movies) / sizeof(favorite_movies[0]));
+                int random_movie_index;
+                do {
+                    random_movie_index = rand() % (sizeof(favorite_movies) / sizeof(favorite_movies[0]));
+                } while (isItemInWatchlist(favorite_movies[random_movie_index]) || favorite_movies[random_movie_index] == previous_suggestion);
+                previous_suggestion = favorite_movies[random_movie_index];
                 printf("One Random favorite movie: %s\n", favorite_movies[random_movie_index]);
                 break;
             }
             case 1: {
-                int random_tv_show_index = rand() % (sizeof(favorite_tv_shows) / sizeof(favorite_tv_shows[0]));
-                printf("One Random favorite TV shows: %s\n", favorite_tv_shows[random_tv_show_index]);
+                int random_tv_show_index;
+                do {
+                    random_tv_show_index = rand() % (sizeof(favorite_tv_shows) / sizeof(favorite_tv_shows[0]));
+                } while (isItemInWatchlist(favorite_tv_shows[random_tv_show_index]) || favorite_tv_shows[random_tv_show_index] == previous_suggestion);
+                previous_suggestion = favorite_tv_shows[random_tv_show_index];
+                printf("One Random favorite TV show: %s\n", favorite_tv_shows[random_tv_show_index]);
                 break;
             }
             case 2: {
-                int random_top_10_index = rand() % (sizeof(My_top_10) / sizeof(My_top_10[0]));
+                int random_top_10_index;
+                do {
+                    random_top_10_index = rand() % (sizeof(My_top_10) / sizeof(My_top_10[0]));
+                } while (isItemInWatchlist(My_top_10[random_top_10_index]) || My_top_10[random_top_10_index] == previous_suggestion);
+                previous_suggestion = My_top_10[random_top_10_index];
                 printf("One of my top 10: %s\n", My_top_10[random_top_10_index]);
                 break;
             }
@@ -128,8 +163,6 @@ int main() {
                 for (int i = 0; i < watchlist_count; i++) {
                     printf("%d: %s\n", i + 1, watchlist[i]);
                 }
-                break;
-            case 4:
                 break;
             case 5:
                 printf("add item to watchlist: ");
