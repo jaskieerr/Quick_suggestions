@@ -79,9 +79,20 @@ bool isItemInWatchlist(const char *item) {
     return false;
 }
 
+bool isItemInPreviousSuggestions(const char *item) {
+    return (previous_suggestion != NULL && strcmp(item, previous_suggestion) == 0);
+}
+
 void addToWatchlist(const char *item) {
     if (watchlist_count < MAX_WATCHLIST_SIZE) {
-        watchlist[watchlist_count] = item;
+        char *newItem = strdup(item);
+        if (newItem == NULL) {
+            printf("jreb trunini as admin if u can't save.\n");
+            return;
+        }
+
+        toLowerCase(newItem);
+        watchlist[watchlist_count] = newItem;
         watchlist_count++;
         printf("%s added to your watchlist.\n", item);
     }
@@ -135,7 +146,7 @@ int main() {
                 int random_movie_index;
                 do {
                     random_movie_index = rand() % (sizeof(favorite_movies) / sizeof(favorite_movies[0]));
-                } while (isItemInWatchlist(favorite_movies[random_movie_index]) || favorite_movies[random_movie_index] == previous_suggestion);
+                } while (isItemInWatchlist(favorite_movies[random_movie_index]) || isItemInPreviousSuggestions(favorite_movies[random_movie_index]));
                 previous_suggestion = favorite_movies[random_movie_index];
                 printf("One Random favorite movie: %s\n", favorite_movies[random_movie_index]);
                 break;
@@ -144,7 +155,7 @@ int main() {
                 int random_tv_show_index;
                 do {
                     random_tv_show_index = rand() % (sizeof(favorite_tv_shows) / sizeof(favorite_tv_shows[0]));
-                } while (isItemInWatchlist(favorite_tv_shows[random_tv_show_index]) || favorite_tv_shows[random_tv_show_index] == previous_suggestion);
+                } while (isItemInWatchlist(favorite_tv_shows[random_tv_show_index]) || isItemInPreviousSuggestions(favorite_tv_shows[random_tv_show_index]));
                 previous_suggestion = favorite_tv_shows[random_tv_show_index];
                 printf("One Random favorite TV show: %s\n", favorite_tv_shows[random_tv_show_index]);
                 break;
@@ -153,7 +164,7 @@ int main() {
                 int random_top_10_index;
                 do {
                     random_top_10_index = rand() % (sizeof(My_top_10) / sizeof(My_top_10[0]));
-                } while (isItemInWatchlist(My_top_10[random_top_10_index]) || My_top_10[random_top_10_index] == previous_suggestion);
+                } while (isItemInWatchlist(My_top_10[random_top_10_index]) || isItemInPreviousSuggestions(My_top_10[random_top_10_index]));
                 previous_suggestion = My_top_10[random_top_10_index];
                 printf("One of my top 10: %s\n", My_top_10[random_top_10_index]);
                 break;
