@@ -39,7 +39,7 @@ const char *favorite_tv_shows[] = {
 };
 
 const char *My_top_10[] = {
-    "Interstellar", "Dark", "Attack on Titans", "The Last Kingdom", "Blood Diamond", "Sherlock", "Schindler's List",
+    "Interstellar", "Dark", "Attack on Titans", "The Last Kingdom", "True Detective (Season 1)", "Sherlock", "Schindler's List",
     "Django Unchained", "2001: A Space Odyssey", "Vinland Saga"
 };
 
